@@ -1,5 +1,5 @@
 % Shubert1 function
-function y = Shubert1_fun(x)
+function y = Shubert_fun1(x)
 n = length(x);
 p = 1.0;
 for i = 1: n

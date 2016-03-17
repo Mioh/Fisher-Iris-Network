@@ -1,14 +1,14 @@
 % Train a network on population P with target T 
 % using k-fold cross-validation
 % PRE: length(P) == length(T), length(P) mod k = 0
-function [net, error, errorv, errors] = trainNetwork(P, T, k, doPlot)
+function [net, error, errorv, errors] = trainNetwork(P, T, h, k, doPlot)
     nrSamples = length(P);
     errors = zeros(k,1);
     errorsv = zeros(k,1);
     step = nrSamples/k - 1;
     
     % Init plot data
-    %y = []; % output vector
+    y = []; % output vector
     perf = [];
     vperf = [];
     gradient = [];
@@ -16,17 +16,10 @@ function [net, error, errorv, errors] = trainNetwork(P, T, k, doPlot)
     best_vperf = zeros(k,1);
     
     % Create network
-    net = newff(P, T, 2, {'tansig' 'purelin'});
+    net = newff(P, T, h, {'tansig' 'purelin'});
     net.plotFcns{3} = 'plotconfusion';
     %net.trainParam.showWindow = 0;
     net = init(net);
-   
-    %for j = 1:10
-    % Create random permutation of data
-    %randIndex = randperm(nrSamples);
-    % Randomize row order based on permutation
-    %T = T(:,randIndex);
-    %P = P(:,randIndex);
         
     % Initiate bounds
     foldEnd = 0;
@@ -50,9 +43,10 @@ function [net, error, errorv, errors] = trainNetwork(P, T, k, doPlot)
         
         % Train network
         [net, record] = train(net, P, T);
-        
+
         % Store output
-        %y = net(P);
+        yk = net(P(:,valInd));
+        y =[y  yk];
         
         if doPlot
             % Store plot info
@@ -66,17 +60,15 @@ function [net, error, errorv, errors] = trainNetwork(P, T, k, doPlot)
         % Store mean squared error
         errors(i, :) = record.best_perf;
         errorsv(i, :) = record.best_vperf;
-        
-        
+              
     end
-    %end
+    
     % Cross-validation error (avarage mean squared error)
     error = sum(errors) / k;
     errorv = sum(errorsv) / k;
     
-    % Plot confition matrix for all folds
-    %plotconfusion(T,y);
-    %set(gca,'FontSize',20);
+    %Plot confition matrix for all folds
+    plotconfusion(T,y);
     
     if doPlot
         % Plot

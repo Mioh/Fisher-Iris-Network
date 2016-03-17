@@ -23,14 +23,12 @@ function [P, T] = prepareData(varargin)
     species = species(randIndex,:);
     measurments = measurments(randIndex,:);
     
-    % Standardize data. (x-mean)/standard deviation
-    %measurments = zscore(measurments);
-    
-    % Normalise data
+    %Normalization NOT needed here as it will be done automatically when
+    %creating the network using mapminmax. It is done in the following way:
     %MIN = min(measurments(:));
     %MAX = max(measurments(:));
     %HIGH = 1;
-    %LOW = 0;
+    %LOW = -1;
     %measurments = (((HIGH-LOW) * (measurments - MIN)) / (MAX - MIN)) + LOW;
     
     % Define target as binary representation of spiecies
@@ -53,7 +51,7 @@ function spieciesBinary = spieciesAsBinary(spiecies)
           case 'Versicolor'
             spieciesBinary(i,:) = [0,1,0]; 
           case 'Virginica'
-            spieciesBinary(i,:) = [0,0,1]; 
+            spieciesBinary(i,:) = [0,0,1];
         end
     end
 end

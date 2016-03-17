@@ -5,6 +5,8 @@ run commands:
 
 clear all;
 close all;
-[P,T] = prepareData();
-%[P,T] = prepareData('plot');
-[net,error, errors] = trainNetwork(P,T,10);
+[P,T] = prepareData(); % to plot data use prepareData('plot');
+[net, error, errorv, errors] = trainNetwork(P, T, 2, 10, true);
+
+% To get the avarage of 100 runs for k = {2,3,4,5,10}, run the script by typing:
+testNetworks;

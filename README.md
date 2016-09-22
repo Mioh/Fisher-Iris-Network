@@ -1,4 +1,4 @@
-# Nearual Networks and Genetic Algorithms Project
+# Fisher Iris Network
 Matlab implementation of a neural network able to categorise Iris plants. 
 Data set provided is the classic Fisher Irish data set in xls format.
 
